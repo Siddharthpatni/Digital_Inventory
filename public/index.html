@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Inventory - Effortless Stock Control</title>
+    <meta name="description"
+        content="Simplified Stock Control for Micro-Retailers and Pop-Up Sellers. Easy stock monitoring, alerts, and quick onboarding.">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/ai-features.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="logo">📦 Digital Inventory</h1>
+            <div class="header-actions">
+                <button class="btn-icon" id="languageToggle" title="Switch Language">
+                    <span class="lang-icon">🌐</span>
+                    <span id="currentLang">EN</span>
+                </button>
+                <button class="btn-icon" id="themeToggle" title="Toggle Theme">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                <button class="btn-icon" id="logoutBtn" title="Logout">
+                    <span>🚪</span>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <!-- Dashboard Page -->
+        <section id="dashboard" class="page active">
+            <div class="page-header">
+                <h2 data-i18n="dashboard">Dashboard</h2>
+                <button class="btn-primary" id="addItemBtn">
+                    <span>+</span>
+                    <span data-i18n="addItem">Add Item</span>
+                </button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card sales-card">
+                    <div class="stat-icon">💵</div>
+                    <div class="stat-info">
+                        <p class="stat-label" data-i18n="todaySales">Today's Sales</p>
+                        <h3 class="stat-value" id="todaySales">€0</h3>
+                        <p class="stat-sublabel" id="todayTransactions">0 transactions</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-info">
+                        <p class="stat-label" data-i18n="totalItems">Total Items</p>
+                        <h3 class="stat-value" id="totalItems">0</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <p class="stat-label" data-i18n="totalValue">Total Value</p>
+                        <h3 class="stat-value" id="totalValue">€0</h3>
+                    </div>
+                </div>
+                <div class="stat-card alert-card">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-info">
+                        <p class="stat-label" data-i18n="lowStock">Low Stock Alerts</p>
+                        <h3 class="stat-value" id="lowStockCount">0</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-info">
+                        <p class="stat-label" data-i18n="categories">Categories</p>
+                        <h3 class="stat-value" id="categoriesCount">0</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h3 data-i18n="quickActions">Quick Actions</h3>
+                <div class="action-grid">
+                    <button class="action-card" onclick="navigateTo('stock')">
+                        <span class="action-icon">📦</span>
+                        <span data-i18n="stockLevel">Stock Level</span>
+                    </button>
+                    <button class="action-card" onclick="navigateTo('alerts')">
+                        <span class="action-icon">🔔</span>
+                        <span data-i18n="alerts">Alerts</span>
+                    </button>
+                    <button class="action-card" onclick="navigateTo('inventory')">
+                        <span class="action-icon">📋</span>
+                        <span data-i18n="inventory">Inventory</span>
+                    </button>
+                    <button class="action-card" onclick="navigateTo('analytics')">
+                        <span class="action-icon">📊</span>
+                        <span data-i18n="analytics">Analytics</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Today's Sales -->
+            <div class="daily-sales-section">
+                <div class="section-header">
+                    <h3 data-i18n="todaysSalesHistory">Today's Sales History</h3>
+                    <button class="btn-primary btn-sm" id="recordSaleBtn">
+                        <span>+</span>
+                        <span data-i18n="recordSale">Record Sale</span>
+                    </button>
+                </div>
+                <div id="dailySalesList" class="sales-list">
+                    <!-- Sales transactions will be dynamically added here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Stock Level Page -->
+        <section id="stock" class="page">
+            <div class="page-header">
+                <button class="btn-back" onclick="navigateTo('dashboard')" title="Back to Dashboard">
+                    <span>←</span>
+                    <span>Back</span>
+                </button>
+                <h2 data-i18n="stockLevel">Stock Level</h2>
+                <div class="search-box">
+                    <input type="text" id="stockSearch" placeholder="Search items..."
+                        data-i18n-placeholder="searchItems">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all" data-i18n="all">All</button>
+                <button class="filter-tab" data-filter="low" data-i18n="lowStock">Low Stock</button>
+                <button class="filter-tab" data-filter="instock" data-i18n="inStock">In Stock</button>
+            </div>
+
+            <div id="stockList" class="stock-list">
+                <!-- Stock items will be dynamically added here -->
+            </div>
+        </section>
+
+        <!-- Alerts Page -->
+        <section id="alerts" class="page">
+            <div class="page-header">
+                <button class="btn-back" onclick="navigateTo('dashboard')" title="Back to Dashboard">
+                    <span>←</span>
+                    <span>Back</span>
+                </button>
+                <h2 data-i18n="alerts">Alerts</h2>
+                <button class="btn-secondary" id="clearAlertsBtn" data-i18n="clearAll">Clear All</button>
+            </div>
+
+            <div id="alertsList" class="alerts-list">
+                <!-- Alerts will be dynamically added here -->
+            </div>
+        </section>
+
+        <!-- Inventory Page -->
+        <section id="inventory" class="page">
+            <div class="page-header">
+                <button class="btn-back" onclick="navigateTo('dashboard')" title="Back to Dashboard">
+                    <span>←</span>
+                    <span>Back</span>
+                </button>
+                <h2 data-i18n="inventory">Effortless Inventory Tracking</h2>
+                <div class="header-actions">
+                    <button class="btn-secondary" id="exportBtn" data-i18n="export">Export</button>
+                    <button class="btn-secondary" id="importBtn" data-i18n="import">Import</button>
+                </div>
+            </div>
+
+            <div class="inventory-table-container">
+                <table class="inventory-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="itemName">Item Name</th>
+                            <th data-i18n="category">Category</th>
+                            <th data-i18n="quantity">Quantity</th>
+                            <th data-i18n="price">Price</th>
+                            <th data-i18n="threshold">Threshold</th>
+                            <th data-i18n="actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventoryTableBody">
+                        <!-- Inventory rows will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Analytics Page -->
+        <section id="analytics" class="page">
+            <div class="page-header">
+                <button class="btn-back" onclick="navigateTo('dashboard')" title="Back to Dashboard">
+                    <span>←</span>
+                    <span>Back</span>
+                </button>
+                <h2 data-i18n="analytics">Past Data Analysis</h2>
+            </div>
+
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <h3 data-i18n="categoryBreakdown">Category Breakdown</h3>
+                    <div id="categoryChart" class="chart-container">
+                        <!-- Category chart will be rendered here -->
+                    </div>
+                </div>
+
+                <div class="analytics-card">
+                    <h3 data-i18n="stockTrends">Stock Trends</h3>
+                    <div id="stockTrends" class="trends-container">
+                        <!-- Stock trends will be rendered here -->
+                    </div>
+                </div>
+
+                <div class="analytics-card">
+                    <h3 data-i18n="topItems">Top Items by Value</h3>
+                    <div id="topItems" class="top-items-list">
+                        <!-- Top items will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Page -->
+        <section id="settings" class="page">
+            <div class="page-header">
+                <button class="btn-back" onclick="navigateTo('dashboard')" title="Back to Dashboard">
+                    <span>←</span>
+                    <span>Back</span>
+                </button>
+                <h2 data-i18n="settings">Settings</h2>
+            </div>
+
+            <div class="settings-container">
+                <div class="settings-section">
+                    <h3 data-i18n="generalSettings">General Settings</h3>
+                    <div class="setting-item">
+                        <label>
+                            <span data-i18n="language">Language</span>
+                            <select id="languageSelect">
+                                <option value="en">English</option>
+                                <option value="de">Deutsch</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <span data-i18n="currency">Currency</span>
+                            <select id="currencySelect">
+                                <option value="EUR">EUR (€)</option>
+                                <option value="USD">USD ($)</option>
+                                <option value="GBP">GBP (£)</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <span data-i18n="defaultThreshold">Default Low Stock Threshold</span>
+                            <input type="number" id="defaultThreshold" value="10" min="1">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3 data-i18n="notifications">Notifications</h3>
+                    <div class="setting-item">
+                        <label class="toggle-label">
+                            <span data-i18n="enableAlerts">Enable Low Stock Alerts</span>
+                            <input type="checkbox" id="enableAlerts" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3 data-i18n="dataManagement">Data Management</h3>
+                    <button class="btn-danger" id="clearDataBtn" data-i18n="clearAllData">Clear All Data</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-page="dashboard">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label" data-i18n="dashboard">Dashboard</span>
+        </button>
+        <button class="nav-item" data-page="stock">
+            <span class="nav-icon">📦</span>
+            <span class="nav-label" data-i18n="stock">Stock</span>
+        </button>
+        <button class="nav-item" data-page="alerts">
+            <span class="nav-icon">🔔</span>
+            <span class="nav-label" data-i18n="alerts">Alerts</span>
+            <span class="badge" id="alertBadge">0</span>
+        </button>
+        <button class="nav-item" data-page="inventory">
+            <span class="nav-icon">📋</span>
+            <span class="nav-label" data-i18n="inventory">Inventory</span>
+        </button>
+        <button class="nav-item" data-page="analytics">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label" data-i18n="analytics">Analytics</span>
+        </button>
+        <button class="nav-item" data-page="settings">
+            <span class="nav-icon">⚙️</span>
+            <span class="nav-label" data-i18n="settings">Settings</span>
+        </button>
+    </nav>
+
+    <!-- Add/Edit Item Modal -->
+    <div id="itemModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle" data-i18n="addNewItem">Add New Item</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="itemForm">
+                <div class="form-group">
+                    <label for="itemName" data-i18n="itemName">Item Name</label>
+                    <input type="text" id="itemName" required>
+                </div>
+                <div class="form-group">
+                    <label for="itemCategory" data-i18n="category">Category</label>
+                    <input type="text" id="itemCategory" list="categoryList" required>
+                    <datalist id="categoryList"></datalist>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="itemQuantity" data-i18n="quantity">Quantity</label>
+                        <input type="number" id="itemQuantity" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemPrice" data-i18n="price">Price</label>
+                        <input type="number" id="itemPrice" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="itemThreshold" data-i18n="lowStockThreshold">Low Stock Threshold</label>
+                    <input type="number" id="itemThreshold" min="1" value="10" required>
+                </div>
+                <div class="form-group">
+                    <label for="itemBarcode">Barcode (Optional)</label>
+                    <input type="text" id="itemBarcode" placeholder="Scan or enter barcode">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeModal()"
+                        data-i18n="cancel">Cancel</button>
+                    <button type="submit" class="btn-primary" data-i18n="save">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Barcode Scanner Modal -->
+    <div id="barcodeScannerModal" class="modal">
+        <div class="modal-content scanner-modal">
+            <div class="modal-header">
+                <h3>📷 Scan Barcode</h3>
+                <button class="close-btn" onclick="closeBarcodeScanner()">&times;</button>
+            </div>
+            <div class="scanner-container">
+                <video id="barcodeVideo" autoplay playsinline></video>
+                <div class="scanner-overlay">
+                    <div class="scanner-line"></div>
+                </div>
+            </div>
+            <div id="barcodeResult" class="barcode-result">Position barcode in view...</div>
+            <div class="scanner-actions">
+                <button class="btn-secondary" onclick="manualBarcodeEntry()">Manual Entry</button>
+                <button class="btn-danger" onclick="closeBarcodeScanner()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Record Sale Modal -->
+    <div id="saleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-i18n="recordSale">Record Sale</h3>
+                <button class="close-btn" onclick="closeSaleModal()">&times;</button>
+            </div>
+            <form id="saleForm">
+                <div class="form-group">
+                    <label for="saleItemSelect" data-i18n="selectItem">Select Item</label>
+                    <select id="saleItemSelect" required>
+                        <option value="">-- Choose an item --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="saleQuantity" data-i18n="quantity">Quantity</label>
+                    <input type="number" id="saleQuantity" min="1" required>
+                    <small id="availableQty" class="form-hint"></small>
+                </div>
+                <div class="form-group">
+                    <label for="salePrice" data-i18n="unitPrice">Unit Price</label>
+                    <input type="number" id="salePrice" step="0.01" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="saleTotal">Total Amount</label>
+                    <input type="number" id="saleTotal" step="0.01" readonly>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeSaleModal()"
+                        data-i18n="cancel">Cancel</button>
+                    <button type="submit" class="btn-primary" data-i18n="recordSale">Record Sale</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- AI Assistant Chat -->
+    <div id="aiChatContainer" class="chat-container">
+        <div class="chat-header">
+            <div class="chat-header-title">
+                <span class="chat-icon">🤖</span>
+                <span>AI Assistant</span>
+            </div>
+            <div class="chat-header-actions">
+                <button class="chat-btn" onclick="clearAIChat()" title="Clear chat">🗑️</button>
+                <button class="chat-btn" onclick="toggleAIChat()" title="Close">✕</button>
+            </div>
+        </div>
+        <div id="aiMessages" class="chat-messages"></div>
+        <div class="chat-input-container">
+            <input type="text" id="aiInput" placeholder="Ask me anything..."
+                onkeypress="if(event.key==='Enter') sendAIMessage()">
+            <button class="chat-send-btn" onclick="sendAIMessage()">📤</button>
+        </div>
+    </div>
+
+    <!-- Customer Support Chat -->
+    <div id="supportChatContainer" class="chat-container">
+        <div class="chat-header support-header">
+            <div class="chat-header-title">
+                <span class="chat-icon">💬</span>
+                <span>Customer Support</span>
+            </div>
+            <div class="chat-header-actions">
+                <button class="chat-btn" onclick="createSupportTicket()" title="Create ticket">🎫</button>
+                <button class="chat-btn" onclick="clearSupportChat()" title="Clear chat">🗑️</button>
+                <button class="chat-btn" onclick="toggleSupportChat()" title="Close">✕</button>
+            </div>
+        </div>
+        <div id="supportMessages" class="chat-messages"></div>
+        <div class="chat-input-container">
+            <input type="text" id="supportInput" placeholder="Type your message..."
+                onkeypress="if(event.key==='Enter') sendSupportMessage()">
+            <button class="chat-send-btn" onclick="sendSupportMessage()">📤</button>
+        </div>
+    </div>
+
+    <!-- Floating Action Buttons -->
+    <div class="floating-buttons">
+        <button class="fab" id="aiChatButton" onclick="toggleAIChat()" title="AI Assistant">
+            🤖
+        </button>
+        <button class="fab" id="supportChatButton" onclick="toggleSupportChat()" title="Customer Support">
+            💬
+        </button>
+        <button class="fab barcode-fab" onclick="openBarcodeScanner()" title="Scan Barcode">
+            📷
+        </button>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Processing...</div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Quagga.js for barcode scanning -->
+    <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2/dist/quagga.min.js"></script>
+
+    <!-- Application Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    <script src="js/barcode-scanner.js"></script>
+    <script src="js/support.js"></script>
+</body>
+
+</html>
