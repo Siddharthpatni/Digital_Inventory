@@ -1,0 +1,98 @@
+StockFlow,Financial Model,,,,,
+,,,,,,,
+Base Costs (Monthly),Amount (EUR),Annual (EUR),Per Customer,Notes,,
+Cloud Hosting,150,1800,1.09,AWS/Azure infrastructure,,
+Database & Redis,80,960,0.58,PostgreSQL + caching,,
+CDN & Storage,40,480,0.29,CloudFlare CDN,,
+SSL & Security,10,120,0.07,Certificates,,
+Dev Tools,50,600,0.36,GitHub monitoring,,
+Support Software,80,960,0.58,Help desk system,,
+Marketing,50,600,0.36,SEO and content,,
+Total Monthly Cost,450,5400,3.28,Fixed operating costs,,
+,,,,,,,
+Scenario 1: €9/month Plan,,,,,,,
+,Monthly,Annual,Formula,Notes,,
+Customers,137,137,,Base count,,
+Price per Customer,9,108,=9*12,Annual pricing,,
+Gross Revenue,1233,14796,=137*9 / =137*108,Total revenue,,
+Operating Costs,450,5400,Fixed,Infrastructure,,
+Net Profit,783,9396,=1233-450 / =14796-5400,After costs,,
+Profit Margin,63.5%,63.5%,=783/1233,Percentage,,
+Cost per Customer,3.28,39.36,=450/137 / =39.36,Per unit,,
+Profit per Customer,5.71,68.58,=783/137 / =9396/137,Per unit,,
+,,,,,,,
+Scenario 2: €19/month Plan,,,,,,,
+,Monthly,Annual,Formula,Notes,,
+Customers,137,137,,Base count,,
+Price per Customer,19,228,=19*12,Annual pricing,,
+Gross Revenue,2603,31236,=137*19 / =137*228,Total revenue,,
+Operating Costs,450,5400,Fixed,Infrastructure,,
+Net Profit,2153,25836,=2603-450 / =31236-5400,After costs,,
+Profit Margin,82.7%,82.7%,=2153/2603,Percentage,,
+Cost per Customer,3.28,39.36,=450/137,Per unit,,
+Profit per Customer,15.71,188.59,=2153/137 / =25836/137,Per unit,,
+,,,,,,,
+Scaling Analysis: €9 Plan,,,,,,,
+Customers,Monthly Revenue,Monthly Costs,Monthly Profit,Margin %,Annual Profit,Break-even
+137,1233,450,783,63.5%,9396,Profitable
+250,2250,550,1700,75.6%,20400,Profitable
+500,4500,750,3750,83.3%,45000,Profitable
+1000,9000,1200,7800,86.7%,93600,Profitable
+,,,,,,,
+Scaling Analysis: €19 Plan,,,,,,,
+Customers,Monthly Revenue,Monthly Costs,Monthly Profit,Margin %,Annual Profit,Break-even
+137,2603,450,2153,82.7%,25836,Profitable
+250,4750,550,4200,88.4%,50400,Profitable
+500,9500,750,8750,92.1%,105000,Profitable
+1000,19000,1200,17800,93.7%,213600,Profitable
+,,,,,,,
+12-Month Growth Projection,,,,,,,
+Month,Starter €9,Pro €19,Business €49,Total Customers,MRR (EUR),Costs (EUR),Profit (EUR)
+1,20,5,0,25,275,450,-175
+2,40,12,1,53,637,450,187
+3,60,20,2,82,1018,475,543
+4,80,30,3,113,1417,500,917
+5,100,40,5,145,1805,525,1280
+6,120,50,7,177,2273,550,1723
+7,140,60,10,210,2750,575,2175
+8,160,70,12,242,3218,600,2618
+9,180,80,15,275,3755,625,3130
+10,200,90,18,308,4292,650,3642
+11,220,100,22,342,4878,675,4203
+12,250,110,25,385,5515,700,4815
+,,,,,,,
+Key Metrics,Value,Industry Benchmark,Status,Notes,,
+Gross Margin,75-83%,70-80%,Exceeds,Strong margins,,
+CAC (Customer Acquisition Cost),€30-45,€50-150,Better,Efficient acquisition,,
+LTV (Lifetime Value),€300-500,€200-400,Higher,Strong retention,,
+LTV:CAC Ratio,12:1,3:1,Excellent,Best-in-class,,
+Payback Period,2-3 months,12-18 months,Fast,Quick recovery,,
+Monthly Churn,<5%,5-7%,Low,Good retention,,
+Net Revenue Retention,105-110%,100-110%,Healthy,Upsell success,,
+,,,,,,,
+3-Year Forecast,,,,,,,
+Year,Customers,MRR (EUR),ARR (EUR),Costs (EUR),Net Profit (EUR),Margin %
+1,385,5515,66180,39697,26483,40%
+2,1200,23333,280000,115000,165000,59%
+3,3000,60000,720000,225000,495000,69%
+,,,,,,,
+Pricing Tiers,,,,,,,
+Plan,Monthly,Annual (Save 20%),Features,Target Market,,
+Starter,€9,€86.40,"100 items, 1 user, basic analytics",Micro-retailers,,
+Professional,€19,€182.40,"1000 items, 5 users, QR codes",Small teams,,
+Business,€49,€470.40,"Unlimited, AI insights, multi-location",Established businesses,,
+Enterprise,€150+,Custom,"White-label, dedicated support",Large organizations,,
+,,,,,,,
+Investment Ask,,,,,,,
+Category,Amount (EUR),Percentage,Purpose,Timeline,,
+Product Development,100000,40%,Team expansion and features,Months 1-12,,
+Marketing & Sales,100000,40%,"Ads, content, sales team",Months 1-18,,
+Operations,30000,12%,"Legal, accounting, tools",Months 1-24,,
+Working Capital,20000,8%,Buffer and contingency,Months 1-24,,
+Total Seed Round,250000,100%,18-24 month runway,,,
+,,,,,,,
+Break-even Analysis,,,,,,,
+Plan,Customers Needed,Monthly Revenue,Monthly Costs,Timeline,,
+€9 Plan,50,450,450,Month 2-3,,
+€19 Plan,24,456,450,Month 1-2,,
+Mixed Portfolio,35,~450,450,Month 2,,

@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const db = require('../models/database');
-const { generateToken, authenticateToken, optionalAuth, authorize } = require('../middleware/auth');
+const { requireAuth, optionalAuth, authorize } = require('../middleware/auth');
 const {
     validateUserRegistration,
     validateUserLogin,
@@ -18,109 +18,6 @@ const {
 } = require('../middleware/validation');
 const { asyncHandler, NotFoundError, AuthenticationError, ConflictError } = require('../middleware/errorHandler');
 const { createAuditLog } = require('../middleware/logger');
-
-// ===== Authentication Routes =====
-
-// Register new user
-router.post('/auth/register', validateUserRegistration, asyncHandler(async (req, res) => {
-    const { username, email, password, role } = req.body;
-
-    // Check if user already exists
-    const existingUser = await db.getUserByUsername(username);
-    if (existingUser) {
-        throw new ConflictError('Username already exists');
-    }
-
-    const existingEmail = await db.getUserByEmail(email);
-    if (existingEmail) {
-        throw new ConflictError('Email already exists');
-    }
-
-    // Hash password
-    const passwordHash = await bcrypt.hash(password, parseInt(process.env.BCRYPT_ROUNDS) || 10);
-
-    // Create user
-    const user = await db.createUser({
-        username,
-        email,
-        password_hash: passwordHash,
-        role: role || 'user'
-    });
-
-    // Generate token
-    const token = generateToken(user);
-
-    // Audit log
-    await createAuditLog(req, 'CREATE', 'user', user.id, null, { username, email, role: user.role });
-
-    res.status(201).json({
-        message: 'User registered successfully',
-        user: {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            role: user.role
-        },
-        token
-    });
-}));
-
-// Login
-router.post('/auth/login', validateUserLogin, asyncHandler(async (req, res) => {
-    const { username, password } = req.body;
-
-    // Get user
-    const user = await db.getUserByUsername(username);
-    if (!user) {
-        throw new AuthenticationError('Invalid username or password');
-    }
-
-    // Check password
-    const isValidPassword = await bcrypt.compare(password, user.password_hash);
-    if (!isValidPassword) {
-        throw new AuthenticationError('Invalid username or password');
-    }
-
-    // Check if user is active
-    if (!user.is_active) {
-        throw new AuthenticationError('Account is inactive');
-    }
-
-    // Generate token
-    const token = generateToken(user);
-
-    // Audit log
-    await createAuditLog(req, 'LOGIN', 'user', user.id, null, null);
-
-    res.json({
-        message: 'Login successful',
-        user: {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            role: user.role
-        },
-        token
-    });
-}));
-
-// Get current user
-router.get('/auth/me', authenticateToken, asyncHandler(async (req, res) => {
-    const user = await db.getUserById(req.user.id);
-    if (!user) {
-        throw new NotFoundError('User');
-    }
-
-    res.json({
-        user: {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            role: user.role,
-            created_at: user.created_at
-        }
-    });
-}));
 
 // ===== Inventory Routes =====
 
@@ -158,7 +55,7 @@ router.get('/inventory/:id', optionalAuth, validateInventoryId, asyncHandler(asy
 }));
 
 // POST create new inventory item (requires authentication)
-router.post('/inventory', authenticateToken, validateInventoryItem, asyncHandler(async (req, res) => {
+router.post('/inventory', requireAuth, validateInventoryItem, asyncHandler(async (req, res) => {
     const { name, category_name, quantity, price, threshold, sku, barcode, description } = req.body;
 
     const newItem = await db.createInventoryItem({
@@ -186,7 +83,7 @@ router.post('/inventory', authenticateToken, validateInventoryItem, asyncHandler
 }));
 
 // PUT update inventory item (requires authentication)
-router.put('/inventory/:id', authenticateToken, validateInventoryUpdate, asyncHandler(async (req, res) => {
+router.put('/inventory/:id', requireAuth, validateInventoryUpdate, asyncHandler(async (req, res) => {
     const { name, category_id, quantity, price, threshold, sku, barcode, description } = req.body;
 
     // Get old values for audit
@@ -219,7 +116,7 @@ router.put('/inventory/:id', authenticateToken, validateInventoryUpdate, asyncHa
 }));
 
 // DELETE inventory item (requires admin or manager role)
-router.delete('/inventory/:id', authenticateToken, authorize('admin', 'manager'), validateInventoryId, asyncHandler(async (req, res) => {
+router.delete('/inventory/:id', requireAuth, authorize('admin', 'manager'), validateInventoryId, asyncHandler(async (req, res) => {
     // Get item for audit
     const item = await db.getInventoryById(req.params.id);
     if (!item) {
@@ -238,6 +135,144 @@ router.delete('/inventory/:id', authenticateToken, authorize('admin', 'manager')
     });
 }));
 
+// ===== QR Code Routes =====
+
+const qrGenerator = require('../utils/qr-generator');
+const path = require('path');
+const fs = require('fs').promises;
+
+// GET QR code for specific inventory item (returns data URL by default)
+router.get('/inventory/:id/qr', optionalAuth, validateInventoryId, asyncHandler(async (req, res) => {
+    const item = await db.getInventoryById(req.params.id);
+    if (!item) {
+        throw new NotFoundError('Inventory item');
+    }
+
+    const format = req.query.format || 'dataUrl'; // png, svg, or dataUrl
+
+    try {
+        const qrCode = await qrGenerator.generate(item, format);
+
+        // Audit log
+        if (req.user) {
+            await createAuditLog(req, 'GENERATE', 'qr-code', item.id, null, { format });
+        }
+
+        res.json({
+            success: true,
+            itemId: item.id,
+            itemName: item.name,
+            sku: item.sku,
+            ...qrCode
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+}));
+
+// GET download QR code as file
+router.get('/inventory/:id/qr/download', optionalAuth, validateInventoryId, asyncHandler(async (req, res) => {
+    const item = await db.getInventoryById(req.params.id);
+    if (!item) {
+        throw new NotFoundError('Inventory item');
+    }
+
+    const format = req.query.format || 'png'; // png or svg
+
+    try {
+        const qrCode = await qrGenerator.generate(item, format);
+
+        // Set appropriate headers for download
+        res.setHeader('Content-Disposition', `attachment; filename="${qrCode.fileName}"`);
+        res.setHeader('Content-Type', format === 'svg' ? 'image/svg+xml' : 'image/png');
+
+        // Send file
+        const fileContent = await fs.readFile(qrCode.filePath);
+        res.send(fileContent);
+
+        // Audit log
+        if (req.user) {
+            await createAuditLog(req, 'DOWNLOAD', 'qr-code', item.id, null, { format });
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+}));
+
+// POST generate QR codes for multiple items (batch)
+router.post('/inventory/qr/batch', requireAuth, asyncHandler(async (req, res) => {
+    const { item_ids, format = 'png' } = req.body;
+
+    if (!item_ids || !Array.isArray(item_ids) || item_ids.length === 0) {
+        return res.status(400).json({
+            success: false,
+            error: 'item_ids array is required'
+        });
+    }
+
+    try {
+        // Fetch items
+        const items = [];
+        for (const id of item_ids) {
+            const item = await db.getInventoryById(id);
+            if (item) {
+                items.push(item);
+            }
+        }
+
+        // Generate QR codes
+        const result = await qrGenerator.generateBatch(items, format);
+
+        // Audit log
+        await createAuditLog(req, 'GENERATE_BATCH', 'qr-code', null, null, {
+            count: items.length,
+            format
+        });
+
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+}));
+
+// DELETE QR code file
+router.delete('/inventory/:id/qr', requireAuth, validateInventoryId, asyncHandler(async (req, res) => {
+    const item = await db.getInventoryById(req.params.id);
+    if (!item) {
+        throw new NotFoundError('Inventory item');
+    }
+
+    const fileName = `qr-${item.id}-${item.sku || 'item'}.png`;
+
+    try {
+        const result = await qrGenerator.delete(fileName);
+
+        // Also try to delete SVG if it exists
+        const svgFileName = `qr-${item.id}-${item.sku || 'item'}.svg`;
+        await qrGenerator.delete(svgFileName);
+
+        // Audit log
+        await createAuditLog(req, 'DELETE', 'qr-code', item.id, null, null);
+
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+}));
+
+
 // ===== Category Routes =====
 
 // GET all categories
@@ -247,7 +282,7 @@ router.get('/categories', asyncHandler(async (req, res) => {
 }));
 
 // POST create category (requires authentication)
-router.post('/categories', authenticateToken, asyncHandler(async (req, res) => {
+router.post('/categories', requireAuth, asyncHandler(async (req, res) => {
     const { name, description } = req.body;
 
     const category = await db.createCategory({ name, description });
@@ -270,7 +305,7 @@ router.get('/alerts', optionalAuth, asyncHandler(async (req, res) => {
 }));
 
 // DELETE all alerts (clear/resolve)
-router.delete('/alerts', authenticateToken, asyncHandler(async (req, res) => {
+router.delete('/alerts', requireAuth, asyncHandler(async (req, res) => {
     const result = await db.clearAllAlerts();
 
     // Audit log
@@ -298,7 +333,7 @@ router.get('/settings', asyncHandler(async (req, res) => {
 }));
 
 // PUT update settings (requires authentication)
-router.put('/settings', authenticateToken, validateSettings, asyncHandler(async (req, res) => {
+router.put('/settings', requireAuth, validateSettings, asyncHandler(async (req, res) => {
     const { language, currency, default_threshold, enable_alerts, theme } = req.body;
 
     // Get old settings for audit
@@ -324,7 +359,7 @@ router.put('/settings', authenticateToken, validateSettings, asyncHandler(async 
 // ===== Audit Logs Routes (Admin only) =====
 
 // GET audit logs
-router.get('/audit-logs', authenticateToken, authorize('admin'), asyncHandler(async (req, res) => {
+router.get('/audit-logs', requireAuth, authorize('admin'), asyncHandler(async (req, res) => {
     const { user_id, entity_type, entity_id, limit = 100 } = req.query;
 
     const filters = {
@@ -358,7 +393,7 @@ router.get('/export', optionalAuth, asyncHandler(async (req, res) => {
 }));
 
 // POST import data (requires admin role)
-router.post('/import', authenticateToken, authorize('admin'), asyncHandler(async (req, res) => {
+router.post('/import', requireAuth, authorize('admin'), asyncHandler(async (req, res) => {
     const { inventory, settings, categories } = req.body;
 
     let imported = { inventory: 0, categories: 0 };
@@ -441,7 +476,7 @@ router.get('/stats/dashboard', optionalAuth, asyncHandler(async (req, res) => {
 // ===== Sales Transaction Routes =====
 
 // POST create new sale transaction (requires authentication)
-router.post('/sales', authenticateToken, asyncHandler(async (req, res) => {
+router.post('/sales', requireAuth, asyncHandler(async (req, res) => {
     const { item_id, quantity } = req.body;
 
     // Validate input

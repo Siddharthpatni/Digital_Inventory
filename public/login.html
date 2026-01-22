@@ -1,362 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Digital Inventory</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        .login-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
-            padding: var(--spacing-lg);
-        }
-
-        .login-card {
-            background: var(--white);
-            padding: var(--spacing-2xl);
-            border-radius: var(--radius-2xl);
-            box-shadow: var(--shadow-xl);
-            width: 100%;
-            max-width: 450px;
-            animation: slideUp 0.5s ease-out;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: var(--spacing-2xl);
-        }
-
-        .login-logo {
-            font-size: 3rem;
-            margin-bottom: var(--spacing-md);
-        }
-
-        .login-title {
-            font-size: var(--font-size-2xl);
-            font-weight: 700;
-            color: var(--gray-900);
-            margin-bottom: var(--spacing-xs);
-        }
-
-        .login-subtitle {
-            font-size: var(--font-size-sm);
-            color: var(--gray-600);
-        }
-
-        .form-group {
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            color: var(--gray-700);
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: var(--spacing-md);
-            border: 2px solid var(--gray-300);
-            border-radius: var(--radius-lg);
-            font-size: var(--font-size-base);
-            transition: all var(--transition-base);
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
-        }
-
-        .login-btn {
-            width: 100%;
-            background: var(--gradient-primary);
-            color: var(--white);
-            border: none;
-            padding: var(--spacing-md);
-            border-radius: var(--radius-lg);
-            font-size: var(--font-size-base);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--transition-base);
-            box-shadow: var(--shadow-md);
-        }
-
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg), var(--shadow-glow);
-        }
-
-        .login-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .error-message {
-            background: linear-gradient(135deg, #FFF5F5 0%, #FEE2E2 100%);
-            color: var(--error);
-            padding: var(--spacing-md);
-            border-radius: var(--radius-lg);
-            margin-bottom: var(--spacing-lg);
-            border-left: 4px solid var(--error);
-            display: none;
-        }
-
-        .error-message.show {
-            display: block;
-            animation: shake 0.5s;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
-        .toggle-form {
-            text-align: center;
-            margin-top: var(--spacing-lg);
-            color: var(--gray-600);
-        }
-
-        .toggle-form a {
-            color: var(--primary-blue);
-            text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .toggle-form a:hover {
-            text-decoration: underline;
-        }
-
-        .demo-credentials {
-            background: var(--gray-50);
-            padding: var(--spacing-md);
-            border-radius: var(--radius-lg);
-            margin-bottom: var(--spacing-lg);
-            font-size: var(--font-size-sm);
-        }
-
-        .demo-credentials strong {
-            color: var(--primary-blue);
-        }
-
-        #registerForm {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 
 <body>
     <div class="login-container">
         <div class="login-card">
             <div class="login-header">
-                <div class="login-logo">📦</div>
-                <h1 class="login-title">Digital Inventory</h1>
-                <p class="login-subtitle">Effortless Stock Control</p>
+                <div class="logo">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="48" height="48" rx="12" fill="url(#logo-gradient)" />
+                        <path d="M24 12L34 18V30L24 36L14 30V18L24 12Z" stroke="white" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M24 24V36" stroke="white" stroke-width="2" stroke-linecap="round" />
+                        <path d="M14 18L24 24L34 18" stroke="white" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <defs>
+                            <linearGradient id="logo-gradient" x1="0" y1="0" x2="48" y2="48">
+                                <stop stop-color="#6366F1" />
+                                <stop offset="1" stop-color="#8B5CF6" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <h1>Digital Inventory</h1>
+                <p>Effortless Stock Control</p>
             </div>
 
-            <div class="error-message" id="errorMessage"></div>
-
-            <!-- Login Form -->
-            <form id="loginForm">
-                <div class="demo-credentials">
-                    <strong>Demo Credentials:</strong><br>
-                    Username: <strong>admin</strong> | Password: <strong>admin123</strong>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username"
+                        autocomplete="username" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="loginUsername">Username</label>
-                    <input type="text" id="loginUsername" required autocomplete="username">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password"
+                        autocomplete="current-password" required>
                 </div>
 
-                <div class="form-group">
-                    <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" required autocomplete="current-password">
-                </div>
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
 
-                <button type="submit" class="login-btn" id="loginBtn">
-                    Sign In
+                <button type="submit" class="login-button" id="loginButton">
+                    <span class="button-text">Sign In</span>
+                    <span class="button-loader" style="display: none;">
+                        <svg class="spinner" viewBox="0 0 50 50">
+                            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
+                        </svg>
+                    </span>
                 </button>
-
-                <div class="toggle-form">
-                    Don't have an account? <a id="showRegister">Create one</a>
-                </div>
             </form>
 
-            <!-- Register Form -->
-            <form id="registerForm">
-                <div class="form-group">
-                    <label for="registerUsername">Username</label>
-                    <input type="text" id="registerUsername" required autocomplete="username">
+            <div class="demo-credentials">
+                <p class="demo-title">Demo Credentials:</p>
+                <div class="credentials-grid">
+                    <div class="credential-card" onclick="fillCredentials('admin', 'admin123')">
+                        <div class="credential-role">Admin</div>
+                        <div class="credential-info">
+                            <span>admin</span> / <span>admin123</span>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="registerEmail">Email</label>
-                    <input type="email" id="registerEmail" required autocomplete="email">
-                </div>
-
-                <div class="form-group">
-                    <label for="registerPassword">Password</label>
-                    <input type="password" id="registerPassword" required autocomplete="new-password" minlength="6">
-                </div>
-
-                <div class="form-group">
-                    <label for="registerPasswordConfirm">Confirm Password</label>
-                    <input type="password" id="registerPasswordConfirm" required autocomplete="new-password" minlength="6">
-                </div>
-
-                <button type="submit" class="login-btn" id="registerBtn">
-                    Create Account
-                </button>
-
-                <div class="toggle-form">
-                    Already have an account? <a id="showLogin">Sign in</a>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 
-    <script>
-        const API_BASE_URL = '/api';
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
-        const errorMessage = document.getElementById('errorMessage');
-        const showRegisterBtn = document.getElementById('showRegister');
-        const showLoginBtn = document.getElementById('showLogin');
-
-        // Toggle between login and register forms
-        showRegisterBtn.addEventListener('click', () => {
-            loginForm.style.display = 'none';
-            registerForm.style.display = 'block';
-            errorMessage.classList.remove('show');
-        });
-
-        showLoginBtn.addEventListener('click', () => {
-            registerForm.style.display = 'none';
-            loginForm.style.display = 'block';
-            errorMessage.classList.remove('show');
-        });
-
-        // Show error message
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorMessage.classList.add('show');
-            setTimeout(() => {
-                errorMessage.classList.remove('show');
-            }, 5000);
-        }
-
-        // Login handler
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const loginBtn = document.getElementById('loginBtn');
-            loginBtn.disabled = true;
-            loginBtn.textContent = 'Signing in...';
-
-            const username = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/auth/login`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.message || 'Login failed');
-                }
-
-                // Store token in localStorage
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('user', JSON.stringify(data.user));
-
-                // Redirect to main app
-                window.location.href = '/';
-            } catch (error) {
-                showError(error.message);
-                loginBtn.disabled = false;
-                loginBtn.textContent = 'Sign In';
-            }
-        });
-
-        // Register handler
-        registerForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const registerBtn = document.getElementById('registerBtn');
-            registerBtn.disabled = true;
-            registerBtn.textContent = 'Creating account...';
-
-            const username = document.getElementById('registerUsername').value;
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
-
-            if (password !== passwordConfirm) {
-                showError('Passwords do not match');
-                registerBtn.disabled = false;
-                registerBtn.textContent = 'Create Account';
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/auth/register`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ username, email, password })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.message || 'Registration failed');
-                }
-
-                // Store token in localStorage
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('user', JSON.stringify(data.user));
-
-                // Redirect to main app
-                window.location.href = '/';
-            } catch (error) {
-                showError(error.message);
-                registerBtn.disabled = false;
-                registerBtn.textContent = 'Create Account';
-            }
-        });
-
-        // Check if already logged in
-        if (localStorage.getItem('token')) {
-            window.location.href = '/';
-        }
-    </script>
+    <script src="/js/login.js"></script>
 </body>
 
 </html>

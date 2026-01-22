@@ -1,0 +1,245 @@
+/* ===== Professional Color Palette for Business/Client Use ===== */
+:root {
+    /* Primary Brand Colors - Professional Blue Theme */
+    --primary: #1E40AF;
+    /* Deep Professional Blue */
+    --primary-light: #3B82F6;
+    /* Bright Blue */
+    --primary-dark: #1E3A8A;
+    /* Dark Navy */
+
+    /* Secondary Colors - Clean and Modern */
+    --secondary: #0891B2;
+    /* Teal */
+    --accent: #7C3AED;
+    /* Purple */
+
+    /* Neutral Palette - Clean Business Look */
+    --white: #FFFFFF;
+    --gray-50: #F8FAFC;
+    --gray-100: #F1F5F9;
+    --gray-200: #E2E8F0;
+    --gray-300: #CBD5E1;
+    --gray-400: #94A3B8;
+    --gray-500: #64748B;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1E293B;
+    --gray-900: #0F172A;
+
+    /* Semantic Colors - Professional */
+    --success: #059669;
+    --success-light: #10B981;
+    --warning: #D97706;
+    --warning-light: #F59E0B;
+    --error: #DC2626;
+    --error-light: #EF4444;
+    --info: #0284C7;
+    --info-light: #0EA5E9;
+
+    /* Professional Gradients */
+    --gradient-primary: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);
+    --gradient-secondary: linear-gradient(135deg, #0891B2 0%, #06B6D4 100%);
+    --gradient-success: linear-gradient(135deg, #059669 0%, #10B981 100%);
+    --gradient-header: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 50%, #3B82F6 100%);
+
+    /* Shadows - Subtle and Professional */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== DARK MODE - Professional Dark Theme ===== */
+[data-theme="dark"] {
+    /* Dark Backgrounds - Professional */
+    --white: #1E293B;
+    --gray-50: #0F172A;
+    --gray-100: #1E293B;
+    --gray-200: #334155;
+    --gray-300: #475569;
+    --gray-400: #64748B;
+    --gray-500: #94A3B8;
+    --gray-600: #CBD5E1;
+    --gray-700: #E2E8F0;
+    --gray-800: #F1F5F9;
+    --gray-900: #F8FAFC;
+
+    /* Dark Mode Primary Colors - Brighter for visibility */
+    --primary: #3B82F6;
+    --primary-light: #60A5FA;
+    --primary-dark: #2563EB;
+
+    /* Dark Mode Semantic Colors */
+    --success: #10B981;
+    --success-light: #34D399;
+    --warning: #F59E0B;
+    --warning-light: #FBBF24;
+    --error: #EF4444;
+    --error-light: #F87171;
+    --info: #0EA5E9;
+    --info-light: #38BDF8;
+
+    /* Dark Mode Gradients */
+    --gradient-primary: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
+    --gradient-secondary: linear-gradient(135deg, #06B6D4 0%, #22D3EE 100%);
+    --gradient-header: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+
+    /* Dark Mode Shadows - More pronounced */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.7);
+}
+
+/* Dark Mode Body */
+body[data-theme="dark"] {
+    background: #0F172A !important;
+    color: var(--gray-900);
+}
+
+body[data-theme="dark"]::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(124, 58, 237, 0.06) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Dark Mode Header */
+body[data-theme="dark"] .header {
+    background: var(--gradient-header);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dark Mode Cards */
+body[data-theme="dark"] .stat-card {
+    background: var(--gray-100);
+    border-color: var(--gray-200);
+}
+
+[data-theme="dark"] .stat-card.sales-card {
+    background: linear-gradient(135deg, #064E3B 0%, #065F46 100%);
+}
+
+[data-theme="dark"] .stat-card.alert-card {
+    background: linear-gradient(135deg, #7F1D1D 0%, #991B1B 100%);
+}
+
+/* Dark Mode Tables */
+[data-theme="dark"] .inventory-table {
+    background: var(--gray-100);
+}
+
+[data-theme="dark"] .inventory-table th {
+    background: var(--gray-50);
+    color: var(--gray-800);
+    border-color: var(--gray-200);
+}
+
+[data-theme="dark"] .inventory-table td {
+    border-color: var(--gray-200);
+    color: var(--gray-800);
+}
+
+[data-theme="dark"] .inventory-table tbody tr:hover {
+    background: var(--gray-200);
+}
+
+/* Dark Mode Forms */
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+    background: var(--gray-50);
+    border-color: var(--gray-200);
+    color: var(--gray-900);
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] select:focus,
+[data-theme="dark"] textarea:focus {
+    border-color: var(--primary);
+    background: var(--gray-100);
+}
+
+/* Dark Mode Modals */
+[data-theme="dark"] .modal-content {
+    background: var(--gray-100);
+    border-color: var(--gray-200);
+}
+
+/* Dark Mode Action Cards */
+[data-theme="dark"] .action-card {
+    background: var(--gray-100);
+    border-color: var(--gray-200);
+    color: var(--gray-700);
+}
+
+[data-theme="dark"] .action-card:hover {
+    background: var(--gradient-primary);
+    color: var(--white);
+}
+
+/* Dark Mode Stock Items */
+[data-theme="dark"] .stock-item {
+    background: var(--gray-100);
+    border-color: var(--gray-200);
+}
+
+[data-theme="dark"] .stock-item.low-stock {
+    background: linear-gradient(135deg, #7F1D1D 0%, #991B1B 100%);
+    border-color: var(--error);
+}
+
+/* Dark Mode Alert Items */
+[data-theme="dark"] .alert-item {
+    background: var(--gray-100);
+    border-color: var(--gray-200);
+}
+
+/* Dark Mode Charts */
+[data-theme="dark"] .chart-container {
+    background: var(--gray-100);
+    border-color: var(--gray-200);
+}
+
+/* Dark Mode Search and Filters */
+[data-theme="dark"] .search-box input {
+    background: var(--gray-50);
+    border-color: var(--gray-200);
+    color: var(--gray-900);
+}
+
+[data-theme="dark"] .filter-tab {
+    color: var(--gray-600);
+}
+
+[data-theme="dark"] .filter-tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+/* Dark Mode Buttons */
+[data-theme="dark"] .btn-secondary {
+    background: var(--gray-100);
+    border-color: var(--gray-200);
+    color: var(--gray-900);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+    background: var(--gradient-primary);
+    color: var(--white);
+}
+
+/* Dark Mode Page Headers */
+[data-theme="dark"] .page-header h2 {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}

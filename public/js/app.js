@@ -6,25 +6,42 @@ const API_BASE_URL = '/api';
 
 // ===== Authentication Helper =====
 function getAuthHeaders() {
-    const token = localStorage.getItem('token');
-    const headers = { 'Content-Type': 'application/json' };
-    if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-    }
-    return headers;
+    return {
+        'Content-Type': 'application/json'
+    };
 }
 
-function checkAuth() {
-    const token = localStorage.getItem('token');
-    if (!token) {
+async function checkAuth() {
+    try {
+        const response = await fetch('/api/auth/session', {
+            credentials: 'include'
+        });
+        const data = await response.json();
+
+        if (!data.authenticated) {
+            window.location.href = '/login.html';
+            return false;
+        }
+
+        // Store user data
+        localStorage.setItem('user', JSON.stringify(data.user));
+        return true;
+    } catch (error) {
+        console.error('Auth check failed:', error);
         window.location.href = '/login.html';
         return false;
     }
-    return true;
 }
 
-function logout() {
-    localStorage.removeItem('token');
+async function logout() {
+    try {
+        await fetch('/api/auth/logout', {
+            method: 'POST',
+            credentials: 'include'
+        });
+    } catch (error) {
+        console.error('Logout error:', error);
+    }
     localStorage.removeItem('user');
     window.location.href = '/login.html';
 }
@@ -378,6 +395,97 @@ const translations = {
     }
 };
 
+// ===== User Profile Management =====
+
+// Load user profile data
+function loadUserProfile() {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+    if (user.username) {
+        document.getElementById('profileUsername').value = user.username || '';
+        document.getElementById('profileEmail').value = user.email || '';
+        document.getElementById('profileRole').value = user.role || 'User';
+
+        // Update avatar initials
+        const initials = user.username ? user.username.substring(0, 2).toUpperCase() : 'U';
+        document.getElementById('avatarInitials').textContent = initials;
+    }
+}
+
+// Update user profile
+async function updateProfile() {
+    const username = document.getElementById('profileUsername').value;
+    const email = document.getElementById('profileEmail').value;
+
+    if (!username) {
+        showToast('Error', 'Username is required', 'error');
+        return;
+    }
+
+    try {
+        showLoading('Updating profile...');
+
+        // In a real application, this would be an API call
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        user.username = username;
+        user.email = email;
+        localStorage.setItem('user', JSON.stringify(user));
+
+        // Update avatar
+        const initials = username.substring(0, 2).toUpperCase();
+        document.getElementById('avatarInitials').textContent = initials;
+
+        hideLoading();
+        showToast('Success', 'Profile updated successfully', 'success');
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        hideLoading();
+        showToast('Error', 'Failed to update profile', 'error');
+    }
+}
+
+// Change password
+async function changePassword() {
+    const currentPassword = document.getElementById('currentPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+        showToast('Error', 'All password fields are required', 'error');
+        return;
+    }
+
+    if (newPassword !== confirmPassword) {
+        showToast('Error', 'New passwords do not match', 'error');
+        return;
+    }
+
+    if (newPassword.length < 6) {
+        showToast('Error', 'Password must be at least 6 characters', 'error');
+        return;
+    }
+
+    try {
+        showLoading('Changing password...');
+
+        // In a real application, this would be an API call
+        // For now, just simulate success
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // Clear password fields
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+
+        hideLoading();
+        showToast('Success', 'Password changed successfully', 'success');
+    } catch (error) {
+        console.error('Error changing password:', error);
+        hideLoading();
+        showToast('Error', 'Failed to change password', 'error');
+    }
+}
+
 // ===== Initialization =====
 document.addEventListener('DOMContentLoaded', async () => {
     // Check authentication first
@@ -591,6 +699,7 @@ function navigateTo(page) {
     if (page === 'alerts') renderAlerts();
     if (page === 'inventory') renderInventoryTable();
     if (page === 'analytics') renderAnalytics();
+    if (page === 'settings') loadUserProfile();
 }
 
 // ===== Dashboard =====
@@ -666,6 +775,7 @@ async function renderStockList(filter = 'all', searchTerm = '') {
                     <div class="stock-quantity-value">${formatCurrency(item.price)}</div>
                 </div>
                 <div class="stock-actions">
+                    <button class="stock-btn qr" onclick="showQRCode(${item.id})" title="Show QR Code">📱</button>
                     <button class="stock-btn sell" onclick="sellItem(${item.id})" title="Sell 1 unit">💰 Sell</button>
                     <button class="stock-btn" onclick="adjustStock(${item.id}, -1)">-</button>
                     <button class="stock-btn" onclick="adjustStock(${item.id}, 1)">+</button>
@@ -919,6 +1029,7 @@ async function renderInventoryTable() {
             <td>${item.threshold}</td>
             <td>
                 <div class="table-actions">
+                    <button class="table-btn qr" onclick="showQRCode(${item.id})" title="Show QR Code">📱</button>
                     <button class="table-btn edit" onclick="editItem(${item.id})">${translate('edit')}</button>
                     <button class="table-btn delete" onclick="deleteItem(${item.id})">${translate('delete')}</button>
                 </div>

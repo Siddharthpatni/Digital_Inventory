@@ -1,0 +1,95 @@
+Category,Item,Monthly_Cost_EUR,Annual_Cost_EUR,Notes
+Infrastructure,Cloud Hosting (AWS/Azure),150,1800,Production servers and load balancing
+Infrastructure,Database & Redis,80,960,PostgreSQL + Redis caching
+Infrastructure,CDN & Storage,40,480,CloudFlare CDN and S3 storage
+Infrastructure,SSL Certificates,10,120,Wildcard SSL for security
+Infrastructure,Development Tools,50,600,"GitHub, monitoring, analytics"
+Infrastructure,Customer Support Software,80,960,Help desk and ticketing system
+Infrastructure,Marketing & SEO,50,600,Basic marketing tools
+TOTAL_COSTS,Monthly Total,450,5400,Fixed operating costs
+
+PRICING_TIERS,Plan,Monthly_Price_EUR,Annual_Price_EUR,Features
+PRICING,Starter,9,86.40,"100 items, 1 user, basic analytics"
+PRICING,Professional,19,182.40,"1000 items, 5 users, QR codes, API"
+PRICING,Business,49,470.40,"Unlimited items, AI insights, multi-location"
+PRICING,Enterprise,150,1440,"Custom features, white-label, dedicated support"
+
+SCENARIO_1,Metric,Value,Calculation,Notes
+REVENUE_9EUR,Customers,137,,Base customer count
+REVENUE_9EUR,Price per Month EUR,9,,Starter plan pricing
+REVENUE_9EUR,Monthly Revenue EUR,1233,=137*9,Gross monthly revenue
+REVENUE_9EUR,Monthly Costs EUR,450,,Fixed operating costs
+REVENUE_9EUR,Monthly Profit EUR,783,=1233-450,Net monthly profit
+REVENUE_9EUR,Profit Margin %,63.5,=783/1233,Percentage profit
+REVENUE_9EUR,Annual Revenue EUR,14796,=1233*12,Total yearly revenue
+REVENUE_9EUR,Annual Costs EUR,5400,=450*12,Total yearly costs
+REVENUE_9EUR,Annual Profit EUR,9396,=14796-5400,Net yearly profit
+REVENUE_9EUR,Cost per Customer Monthly EUR,3.28,=450/137,Operating cost per customer
+REVENUE_9EUR,Cost per Customer Yearly EUR,39.36,=3.28*12,Annual cost per customer
+REVENUE_9EUR,Profit per Customer Yearly EUR,68.58,=9396/137,Annual profit per customer
+
+SCENARIO_2,Metric,Value,Calculation,Notes
+REVENUE_19EUR,Customers,137,,Base customer count
+REVENUE_19EUR,Price per Month EUR,19,,Professional plan pricing
+REVENUE_19EUR,Monthly Revenue EUR,2603,=137*19,Gross monthly revenue
+REVENUE_19EUR,Monthly Costs EUR,450,,Fixed operating costs
+REVENUE_19EUR,Monthly Profit EUR,2153,=2603-450,Net monthly profit
+REVENUE_19EUR,Profit Margin %,82.7,=2153/2603,Percentage profit
+REVENUE_19EUR,Annual Revenue EUR,31236,=2603*12,Total yearly revenue
+REVENUE_19EUR,Annual Costs EUR,5400,=450*12,Total yearly costs
+REVENUE_19EUR,Annual Profit EUR,25836,=31236-5400,Net yearly profit
+REVENUE_19EUR,Cost per Customer Monthly EUR,3.28,=450/137,Operating cost per customer
+REVENUE_19EUR,Cost per Customer Yearly EUR,39.36,=3.28*12,Annual cost per customer
+REVENUE_19EUR,Profit per Customer Yearly EUR,188.59,=25836/137,Annual profit per customer
+
+SCALING_9EUR,Customers,Monthly_Revenue_EUR,Monthly_Costs_EUR,Monthly_Profit_EUR,Profit_Margin_%,Annual_Profit_EUR
+SCALE_9,137,1233,450,783,63.5,9396
+SCALE_9,250,2250,550,1700,75.6,20400
+SCALE_9,500,4500,750,3750,83.3,45000
+SCALE_9,1000,9000,1200,7800,86.7,93600
+
+SCALING_19EUR,Customers,Monthly_Revenue_EUR,Monthly_Costs_EUR,Monthly_Profit_EUR,Profit_Margin_%,Annual_Profit_EUR
+SCALE_19,137,2603,450,2153,82.7,25836
+SCALE_19,250,4750,550,4200,88.4,50400
+SCALE_19,500,9500,750,8750,92.1,105000
+SCALE_19,1000,19000,1200,17800,93.7,213600
+
+BREAKEVEN,Plan,Breakeven_Customers_Monthly,Monthly_Revenue_Needed_EUR,Time_to_Breakeven_Months
+BREAKEVEN,9 EUR Plan,50,450,2-3
+BREAKEVEN,19 EUR Plan,24,456,1-2
+BREAKEVEN,Mixed Portfolio,35,450,2
+
+GROWTH_PROJECTION,Month,Starter_9EUR,Professional_19EUR,Business_49EUR,MRR_EUR,Cumulative_Profit_EUR
+PROJECTION,1,20,5,0,275,-175
+PROJECTION,2,40,12,1,637,12
+PROJECTION,3,60,20,2,1018,580
+PROJECTION,4,80,30,3,1417,1547
+PROJECTION,5,100,40,5,1805,2902
+PROJECTION,6,120,50,7,2273,4775
+PROJECTION,7,140,60,10,2750,7075
+PROJECTION,8,160,70,12,3218,9843
+PROJECTION,9,180,80,15,3755,13148
+PROJECTION,10,200,90,18,4292,16990
+PROJECTION,11,220,100,22,4878,21418
+PROJECTION,12,250,110,25,5515,26483
+
+KEY_METRICS,Metric,Value,Industry_Benchmark,Status
+METRICS,Gross Margin %,75-83,70-80,Exceeds
+METRICS,CAC EUR,30-45,50-150,Better
+METRICS,LTV EUR,300-500,200-400,Higher
+METRICS,LTV CAC Ratio,12:1,3:1,Excellent
+METRICS,Payback Period Months,2-3,12-18,Fast
+METRICS,Monthly Churn %,<5,5-7,Low
+METRICS,Net Revenue Retention %,105-110,100-110,Healthy
+
+INVESTMENT,Category,Amount_EUR,Percentage_%,Purpose
+FUNDING,Product Development,100000,40,Team expansion and features
+FUNDING,Marketing & Sales,100000,40,Ads content and sales team
+FUNDING,Operations,30000,12,Legal accounting and tools
+FUNDING,Working Capital,20000,8,Buffer and contingency
+FUNDING,TOTAL SEED ROUND,250000,100,18-24 month runway
+
+3YR_FORECAST,Year,Customers,ARR_EUR,Revenue_EUR,Costs_EUR,Net_Profit_EUR,Profit_Margin_%
+FORECAST,1,385,66180,66180,39697,26483,40
+FORECAST,2,1200,280000,280000,115000,165000,59
+FORECAST,3,3000,720000,720000,225000,495000,69

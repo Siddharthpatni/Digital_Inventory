@@ -230,6 +230,19 @@ const getUserById = (id) => {
     });
 };
 
+const updateUserPassword = (id, passwordHash) => {
+    return new Promise((resolve, reject) => {
+        db.run(
+            'UPDATE users SET password_hash = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+            [passwordHash, id],
+            function (err) {
+                if (err) reject(err);
+                else resolve({ id, updated: this.changes });
+            }
+        );
+    });
+};
+
 // ===== Audit Logging =====
 
 const createAuditLog = (log) => {
@@ -613,6 +626,7 @@ module.exports = {
     getUserByUsername,
     getUserByEmail,
     getUserById,
+    updateUserPassword,
     // Audit operations
     createAuditLog,
     getAuditLogs,
