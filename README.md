@@ -1,16 +1,35 @@
-# 🎯 InventoryPro - Smart Inventory Management for Modern Businesses
+# 🎯 StockFlow - Digital Inventory Management System
 
 <div align="center">
 
 ![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)
-![License](https://img.shields.io/badge/license-Commercial-green.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Node](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg)
 ![Status](https://img.shields.io/badge/status-Production%20Ready-success.svg)
 
-**Transform Your Inventory Management with AI-Powered Insights**
+**Professional inventory management for modern businesses**
 
-[Demo](http://localhost:3000) • [Documentation](#features) • [Pricing](#pricing) • [Support](#support)
+[Live Demo](http://localhost:3000) • [Documentation](#documentation) • [Business Plan](BUSINESS_PLAN.md) • [Pricing](COST_ESTIMATION.md)
 
 </div>
+
+---
+
+## 📚 Complete Documentation
+
+This project includes comprehensive business and technical documentation:
+
+### Business Documents
+- 📊 **[Business Plan](BUSINESS_PLAN.md)** - Complete business strategy and market analysis
+- 💰 **[Cost Estimation](COST_ESTIMATION.md)** - Detailed pricing model (€9-€19/month plans)
+- 📈 **[Investor Pitch Deck](PITCH_DECK.md)** - 23-slide presentation for investors
+- 🎓 **[Student Presentation](PRESENTATION.md)** - Academic/corporate presentation format
+- 📑 **[Financial Model](Financial_Model.csv)** - Excel-ready financial projections
+
+### Technical Documents
+- 🎨 **[Design Updates](DESIGN_UPDATES.md)** - UI/UX implementation details
+- 📖 **[Export Guide](EXPORT_GUIDE.md)** - How to create PowerPoint/PDF from presentations
+- 🚀 **[Demo Guide](DEMO_GUIDE.md)** - Quick start for demonstrations
 
 ---
 
